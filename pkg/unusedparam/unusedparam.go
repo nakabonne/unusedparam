@@ -6,26 +6,25 @@ import (
 	"go/parser"
 	"go/token"
 	"io/ioutil"
-
-	"github.com/k0kubun/pp"
 )
 
 // Issue represents an issue found by linters.
 type Issue struct {
-	Text       string
-	Pos        token.Position
-	Suggestion *Suggestion
+	Text string
+	Pos  token.Position
 }
 
-// Suggestion represents how to fix the issue.
-type Suggestion struct {
-	// Whether it needs to just delete without replacement codes.
-	JustDelete bool
-	NewLine    string
+func (i *Issue) String() string {
+	return fmt.Sprintf("%s:%d:%d: %s", i.Pos.Filename, i.Pos.Line, i.Pos.Column, i.Text)
+}
+
+// parameter represents a function parameter.
+type parameter struct {
+	ident *ast.Ident
+	used  bool
 }
 
 func Check(path string) ([]*Issue, error) {
-	issues := []*Issue{}
 	src, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -33,27 +32,27 @@ func Check(path string) ([]*Issue, error) {
 	fset := token.NewFileSet()
 	f, _ := parser.ParseFile(fset, path, src, parser.Mode(0))
 
+	issues := []*Issue{}
 	ast.Inspect(f, func(n ast.Node) bool {
 		if dec, ok := n.(*ast.FuncDecl); ok {
-			paramsMap := map[string]interface{}{}
+			paramsMap := map[string]*parameter{}
 			// TODO: Check if nil.
-			// Make a map whose keys are paramsMap of the function.
+			// Make a map whose keys are names of params.
 			for _, l := range dec.Type.Params.List {
-				for _, name := range l.Names {
-					paramsMap[name.String()] = nil
+				for _, n := range l.Names {
+					paramsMap[n.String()] = &parameter{ident: n}
 				}
 			}
 
 			// Check if the params are used by the function.
 			for _, stmt := range dec.Body.List {
-				pp.Println(stmt)
 				switch stmt := stmt.(type) {
 				case *ast.AssignStmt:
 					for _, lh := range stmt.Lhs {
 						switch lh := lh.(type) {
 						case *ast.Ident:
 							if _, ok := paramsMap[lh.String()]; ok {
-								paramsMap[lh.String()] = struct{}{}
+								paramsMap[lh.String()].used = true
 							}
 						}
 					}
@@ -61,34 +60,38 @@ func Check(path string) ([]*Issue, error) {
 						switch rh := rh.(type) {
 						case *ast.Ident:
 							if _, ok := paramsMap[rh.String()]; ok {
-								paramsMap[rh.String()] = struct{}{}
+								paramsMap[rh.String()].used = true
 							}
 						case *ast.BinaryExpr:
 							switch x := rh.X.(type) {
 							case *ast.Ident:
 								if _, ok := paramsMap[x.String()]; ok {
-									paramsMap[x.String()] = struct{}{}
+									paramsMap[x.String()].used = true
 								}
 							}
 							switch y := rh.Y.(type) {
 							case *ast.Ident:
 								if _, ok := paramsMap[y.String()]; ok {
-									paramsMap[y.String()] = struct{}{}
+									paramsMap[y.String()].used = true
 								}
 							}
 						}
 					}
 				case *ast.ReturnStmt:
-					// TODO: Add cases.
+					// TODO: Add all cases of Stmt.
 
 				}
 			}
-			for k, v := range paramsMap {
-				if v != nil {
+
+			// Make Issues based on the unused params.
+			for name, param := range paramsMap {
+				if param.used {
 					continue
 				}
-				// TODO: Convert issues, means fetching the token.Position.
-				fmt.Printf("%s is unused\n", k)
+				issues = append(issues, &Issue{
+					Text: fmt.Sprintf("%s is unused in %s", name, dec.Name.String()),
+					Pos:  fset.Position(param.ident.Pos()),
+				})
 			}
 		}
 		return true

@@ -1,7 +1,7 @@
 package testdata
 
-func Sum(n, m int) int {
+func Sum(n, m int) int { // n,m is unused
 	num1 := 1
-	sum := num1 + m
-	return sum
+	num2 := 2
+	return num1 + num2
 }

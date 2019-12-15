@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/k0kubun/pp"
 	"github.com/nakabonne/unusedparam/pkg/unusedparam"
 )
 
@@ -13,5 +12,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	pp.Println(issues)
+	for _, issue := range issues {
+		fmt.Println(issue)
+	}
 }
