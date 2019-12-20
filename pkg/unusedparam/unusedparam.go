@@ -39,15 +39,13 @@ func Check(path string) ([]*Issue, error) {
 
 	issues := []*Issue{}
 	ast.Inspect(f, func(n ast.Node) bool {
-		var (
-			dec *ast.FuncDecl
-			ok  bool
-		)
-		if dec, ok = n.(*ast.FuncDecl); !ok {
+		dec, ok := n.(*ast.FuncDecl)
+		if !ok || dec.Body == nil {
 			return true
 		}
-		paramsMap := map[string]*parameter{}
+
 		// Make a map whose keys are names of params.
+		paramsMap := map[string]*parameter{}
 		for _, l := range dec.Type.Params.List {
 			for _, n := range l.Names {
 				paramsMap[n.String()] = &parameter{ident: n}
@@ -67,7 +65,7 @@ func Check(path string) ([]*Issue, error) {
 			})
 		}
 
-		// Make Issues based on the unused params.
+		// Make a slice of issues based on the unused params.
 		for name, param := range paramsMap {
 			if param.used {
 				continue
