@@ -1,5 +1,9 @@
 package testdata
 
+func _() int {
+	return 0
+}
+
 func _(n, m int) int {
 	num1 := n
 	num2 := m
