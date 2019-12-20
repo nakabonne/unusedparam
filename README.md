@@ -1,6 +1,8 @@
 # unusedparam
 
-A Go static analysis tool to inspect go source files and detect unused function parameters. It doesn't require to pre-load Go packages, all you need is files and no need to make preparations anything such as code generation, downloading modules. It allows you to run in CI environments easily even if your project depends on a complicated build system.
+A Go static analysis tool to inspect go source files and detect unused function parameters.  
+
+It doesn't require to preload Go packages, all you need is files and no need to make preparations anything such as code generation, downloading modules. It allows you to run in CI environments easily even if your project depends on a complicated build system.
 
 
 ## Installation
