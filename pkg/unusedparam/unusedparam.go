@@ -34,7 +34,7 @@ func Check(path string) ([]*Issue, error) {
 	fset := token.NewFileSet()
 	f, _ := parser.ParseFile(fset, path, src, parser.ParseComments)
 	if len(f.Comments) > 0 && isGenerated(f.Comments[0].Text()) {
-		return nil, fmt.Errorf("generated file")
+		return nil, fmt.Errorf("%s is a generated file", path)
 	}
 
 	issues := []*Issue{}
