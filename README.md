@@ -1,6 +1,6 @@
 # unusedparam
 
-`unusedparam` inspects just go source files and detect unused function parameters. All you need is files, no need to make preparations anything such as code generation, downloading modules. It means it's easy to run in CI environments.  
+`unusedparam` inspects just go source files and detect unused function parameters. All you need is files, no need to make preparations anything such as code generation, downloading modules. It allows you to run in CI environments easily.  
 This is a Go static analysis tool inspired by [mvdan/unparam](https://github.com/mvdan/unparam).
 
 # Installation
