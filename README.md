@@ -23,7 +23,7 @@ unusedparam ./testdata/*
   
     
 
-With `Check()`, you can handle the structured issue in your code.
+With `Check()`, you can handle the structured issues in your code.
 
 ```go
 import (
@@ -32,12 +32,12 @@ import (
 )
 
 func main() {
-	issue, _ := unusedparam.Check("./testdata/assign_stmt.go")
-	pp.Println(issue)
+	issues, _ := unusedparam.Check("./testdata/assign_stmt.go")
+	pp.Println(issues)
 }
 ```
 
-structured issue:
+structured issues:
 
 ```go
 []*unusedparam.Issue{
