@@ -23,7 +23,7 @@ unusedparam ./testdata/*
   
     
 
-With `Check()`, you can use in your code.
+With `Check()`, you can handle the structured issue in your code.
 
 ```go
 import (
