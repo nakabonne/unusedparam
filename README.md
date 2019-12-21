@@ -22,8 +22,7 @@ You can see how it does by using files underneath `/testdata`.
 unusedparam ./testdata/*
 ```
 
-  
-    
+### Using as a library
 
 With `Check()`, you can handle the structured issues in your code.
 
