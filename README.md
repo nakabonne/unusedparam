@@ -14,7 +14,8 @@ go get -u github.com/nakabonne/unusedparam
 
 ```
 usage: unusedparam [flags] [files ...]
-  -v    verbose output
+  -json Emit json format
+  -v	Verbose output
 ```
 
 You can see how it does by using files underneath `/testdata`.

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -10,7 +11,8 @@ import (
 
 var (
 	flagSet = flag.NewFlagSet("unusedparam", flag.ContinueOnError)
-	verbose = flagSet.Bool("v", false, "verbose output")
+	verbose = flagSet.Bool("v", false, "Verbose output")
+	outJSON = flagSet.Bool("json", false, "Emit json format")
 )
 
 func main() {
@@ -35,6 +37,16 @@ func main() {
 			}
 		}
 		issues = append(issues, i...)
+	}
+
+	if *outJSON {
+		js, err := json.Marshal(issues)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(js))
+		return
 	}
 	for _, issue := range issues {
 		fmt.Println(issue)
