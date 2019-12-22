@@ -15,6 +15,15 @@ func TestCheck(t *testing.T) {
 		wantErr  bool
 	}{
 		{
+			path:     "../../testdata/generated.go",
+			expected: nil,
+			wantErr:  true,
+		},
+		{
+			path:     "../../testdata/empty_func.go",
+			expected: []*Issue{},
+		},
+		{
 			path: "../../testdata/assign_stmt.go",
 			expected: []*Issue{
 				&Issue{
@@ -100,11 +109,6 @@ func TestCheck(t *testing.T) {
 					},
 				},
 			},
-		},
-		{
-			path:     "../../testdata/generated.go",
-			expected: nil,
-			wantErr:  true,
 		},
 		{
 			path: "../../testdata/inc_dec_stmt.go",
