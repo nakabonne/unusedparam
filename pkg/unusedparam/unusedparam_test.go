@@ -188,6 +188,38 @@ func TestCheck(t *testing.T) {
 				},
 			},
 		},
+		{
+			path: "../../testdata/go_stmt.go",
+			expected: []*Issue{
+				&Issue{
+					Text: "m is unused in _",
+					Pos: token.Position{
+						Filename: "../../testdata/go_stmt.go",
+						Offset:   101,
+						Line:     10,
+						Column:   11,
+					},
+				},
+				&Issue{
+					Text: "n is unused in _",
+					Pos: token.Position{
+						Filename: "../../testdata/go_stmt.go",
+						Offset:   188,
+						Line:     17,
+						Column:   8,
+					},
+				},
+				&Issue{
+					Text: "m is unused in _",
+					Pos: token.Position{
+						Filename: "../../testdata/go_stmt.go",
+						Offset:   191,
+						Line:     17,
+						Column:   11,
+					},
+				},
+			},
+		},
 	}
 
 	for _, tc := range cases {
