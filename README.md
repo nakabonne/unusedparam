@@ -1,5 +1,7 @@
 # unusedparam
 
+[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/nakabonne/unusedparam/pkg/unusedparam)
+
 A Go static analysis tool to inspect go source files and detect unused function parameters.  
 
 It doesn't require to preload Go packages, all you need is files and no need to make preparations anything such as code generation, downloading modules. It allows you to run in CI environments easily even if your project depends on a complicated build system.
@@ -28,14 +30,10 @@ unusedparam ./testdata/*
 With `Check()`, you can handle the structured issues in your code.
 
 ```go
-import (
-	"github.com/k0kubun/pp"
-	"github.com/nakabonne/unusedparam/pkg/unusedparam"
-)
+import "github.com/nakabonne/unusedparam/pkg/unusedparam"
 
 func main() {
 	issues, _ := unusedparam.Check("./testdata/assign_stmt.go")
-	pp.Println(issues)
 }
 ```
 
