@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const blankIdentifier = "_"
+
 // Issue represents an issue found by linters.
 type Issue struct {
 	Text string
@@ -68,6 +70,9 @@ func Check(path string) ([]*Issue, error) {
 		// Make a slice of issues based on the unused params.
 		for name, param := range paramsMap {
 			if param.used {
+				continue
+			}
+			if name == blankIdentifier {
 				continue
 			}
 			issues = append(issues, &Issue{
